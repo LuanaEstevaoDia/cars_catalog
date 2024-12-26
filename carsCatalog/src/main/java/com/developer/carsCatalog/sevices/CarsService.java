@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.developer.carsCatalog.entities.Cars;
+import com.developer.carsCatalog.entities.Make;
 import com.developer.carsCatalog.repositories.CarsRepository;
+
 
 @Service
 public class CarsService {
@@ -19,11 +21,15 @@ public class CarsService {
 	@Autowired
 	CarsRepository carsRepository;
 
+	
+
+
+
 	public Cars saveCar(Cars car) {
-		logger.info("Salvando veículo: {}", car);
-		Cars savedCar = carsRepository.save(car);
-		logger.info("Car saved: {}", savedCar);
-		return savedCar;
+		
+		return carsRepository.save(car);
+		
+
 	}
 
 	public List<Cars> findAll() {
@@ -35,6 +41,12 @@ public class CarsService {
 	public Optional<Cars> findById(Long id) {
 		return carsRepository.findById(id);
 	}
+	
+	public  String update(Long id, Cars car) {
+		car.setId(id);
+		this.carsRepository.save(car);
+		return car.getModel() + "Atualização realizada com sucesso";
+	}
 
 	public Boolean deleteById(Long id) {
 		Optional<Cars> carDeleted = carsRepository.findById(id);
@@ -44,4 +56,20 @@ public class CarsService {
 		}
 		return null;
 	}
+	
+	public List<Cars> findByModel(String model){
+		return this.carsRepository.findByModel(model);
+		
+	}
+	public List<Cars> findByMake(Long idMake){
+		Make make = new Make();
+		make.setId(idMake);
+		return this.carsRepository.findByMake(make);
+}
+
+	public List<Cars> findByCarsYears(int years){
+		return this.carsRepository.findByCarsYears(years);
+		
+	}
+	
 }

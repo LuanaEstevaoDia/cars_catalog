@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.developer.carsCatalog.entities.Cars;
+import com.developer.carsCatalog.entities.Make;
 import com.developer.carsCatalog.sevices.CarsService;
 
 @RestController
@@ -32,9 +34,18 @@ public class CarsController {
 	CarsService carsService;
 
 	@PostMapping("/save")
-	public Cars saveCar(@RequestBody Cars car) {
-		logger.info("Received request to save car: {}", car);
-		return carsService.saveCar(car);
+	public ResponseEntity<Cars> saveCar(@RequestBody Cars car) {
+		try {
+			logger.info("Received request to save car: {}", car);
+			Cars savedCar = carsService.saveCar(car);
+			logger.info("Car saved successfully: {}", savedCar);
+			return new ResponseEntity<>(savedCar, HttpStatus.OK);
+
+		} catch (Exception e) {
+			logger.error("Error saving car", e);
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+		}
 
 	}
 
@@ -67,16 +78,16 @@ public class CarsController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+
 	}
 
-
-   @PutMapping("/update/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<Cars> upDateCars(@PathVariable Long id, @RequestBody Cars carDetails) {
 		try {
 			Optional<Cars> carData = carsService.findById(id);
 			if (carData.isPresent()) {
 				Cars upDatedCar = carData.get();
-				upDatedCar.setManufacturer(carDetails.getManufacturer());
+
 				upDatedCar.setModel(carDetails.getModel());
 				upDatedCar.setYears(carDetails.getYears());
 
@@ -90,18 +101,64 @@ public class CarsController {
 
 		}
 	}
-   
-   @DeleteMapping("/delete/{id}")
-   public ResponseEntity<Map<String, Boolean>> deleteCar(@PathVariable Long id) {
-       try {
-           boolean deleted = carsService.deleteById(id);
-           Map<String, Boolean> response = new HashMap<>();
-           response.put("deleted", deleted);
-           return new ResponseEntity<>(response, HttpStatus.OK);
-       } catch (Exception e) {
-           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-       }
-   }
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Map<String, Boolean>> deleteCar(@PathVariable Long id) {
+		try {
+			boolean deleted = carsService.deleteById(id);
+			Map<String, Boolean> response = new HashMap<>();
+			response.put("deleted", deleted);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+
+	@GetMapping("/findByModel")
+	public ResponseEntity<List<Cars>> findByModel(@RequestParam String model) {
+		try {
+			logger.info("Finding cars by model: {}", model);
+			List<Cars> cars = carsService.findByModel(model);
+			logger.info("Found {} cars", cars.size());
+			return new ResponseEntity<>(cars, HttpStatus.OK);
+	
+		} catch (Exception e) {
+			logger.error("Error finding cars by model: " + model, e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	
+	@GetMapping("/findByMake")
+	public ResponseEntity<List<Cars>> findByMake(@RequestParam Long idMake) {
+		try {
+			logger.info("Finding cars by model: {}", idMake);
+			List<Cars> cars = carsService.findByMake(idMake);
+			logger.info("Found {} cars", cars.size());
+			return new ResponseEntity<>(cars, HttpStatus.OK);
+	
+		} catch (Exception e) {
+			logger.error("Error finding cars by model: " + idMake, e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@GetMapping("/findByYears")
+	public ResponseEntity<List<Cars>> findByCarsYears(@RequestParam int years) {
+		try {
+			logger.info("Finding cars by model: {}", years);
+			List<Cars> cars = carsService.findByCarsYears(years);
+			logger.info("Found {} cars", cars.size());
+			return new ResponseEntity<>(cars, HttpStatus.OK);
+	
+		} catch (Exception e) {
+			logger.error("Error finding cars by model: " + years, e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+	}
 
 
 }
