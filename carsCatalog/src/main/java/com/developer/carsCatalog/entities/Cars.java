@@ -39,7 +39,10 @@ public class Cars implements Serializable {
 	@JoinTable(name="car_owners")
 	private List<Owner> owners;
 	
-
+    public Make getMake() {
+    	return make;
+    	
+    }
 
 	
 	
