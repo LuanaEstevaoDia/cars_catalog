@@ -14,6 +14,8 @@ public interface CarsRepository extends JpaRepository<Cars, Long> {
 	
 	public List<Cars> findByMake(Make make);
 	
+	boolean existsByChassi(String chassi);
+	
 	@Query("FROM Cars c WHERE c.years > :years")
 	public List<Cars> findByCarsYears(int years);
 

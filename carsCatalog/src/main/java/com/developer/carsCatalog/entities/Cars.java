@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,15 +14,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Cars implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +36,10 @@ public class Cars implements Serializable {
 
 	private String model;
 	private Integer years;
+	private String chassi;
+	private Double price;
+	
+	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Make make;
@@ -42,7 +51,11 @@ public class Cars implements Serializable {
     public Make getMake() {
     	return make;
     	
-    }
+    
+	}
+
+	@Enumerated(EnumType.STRING)
+    private StatusCar status;
 
 	
 	

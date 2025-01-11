@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.developer.carsCatalog.entities.Cars;
 import com.developer.carsCatalog.entities.Make;
+import com.developer.carsCatalog.entities.StatusCar;
 import com.developer.carsCatalog.sevices.CarsService;
 
 @RestController
@@ -90,7 +91,12 @@ public class CarsController {
 
 				upDatedCar.setModel(carDetails.getModel());
 				upDatedCar.setYears(carDetails.getYears());
+				upDatedCar.setChassi(carDetails.getChassi());
+				upDatedCar.setMake(carDetails.getMake());
+				upDatedCar.setOwners(carDetails.getOwners());
+				upDatedCar.setStatus(carDetails.getStatus());
 
+				carsService.validateCar(upDatedCar);
 				return new ResponseEntity<>(carsService.saveCar(upDatedCar), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,7 +119,6 @@ public class CarsController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 
 	@GetMapping("/findByModel")
 	public ResponseEntity<List<Cars>> findByModel(@RequestParam String model) {
@@ -122,14 +127,14 @@ public class CarsController {
 			List<Cars> cars = carsService.findByModel(model);
 			logger.info("Found {} cars", cars.size());
 			return new ResponseEntity<>(cars, HttpStatus.OK);
-	
+
 		} catch (Exception e) {
 			logger.error("Error finding cars by model: " + model, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 	}
-	
+
 	@GetMapping("/findByMake")
 	public ResponseEntity<List<Cars>> findByMake(@RequestParam Long idMake) {
 		try {
@@ -137,7 +142,7 @@ public class CarsController {
 			List<Cars> cars = carsService.findByMake(idMake);
 			logger.info("Found {} cars", cars.size());
 			return new ResponseEntity<>(cars, HttpStatus.OK);
-	
+
 		} catch (Exception e) {
 			logger.error("Error finding cars by model: " + idMake, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -152,13 +157,12 @@ public class CarsController {
 			List<Cars> cars = carsService.findByCarsYears(years);
 			logger.info("Found {} cars", cars.size());
 			return new ResponseEntity<>(cars, HttpStatus.OK);
-	
+
 		} catch (Exception e) {
 			logger.error("Error finding cars by model: " + years, e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 	}
-
 
 }
