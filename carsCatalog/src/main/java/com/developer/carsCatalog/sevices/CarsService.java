@@ -83,7 +83,7 @@ public class CarsService {
 	public void validateCar(Cars car) {
 		if(car.getModel() == null ||car.getModel().isEmpty()){
 			throw new IllegalArgumentException("O Campo modelo é obrigatório");
-			
+	
 		}
 		int currentYear = LocalDate.now().getYear();
 		if(car.getYears() < 1900 || car.getYears() > currentYear) {
@@ -103,7 +103,7 @@ public class CarsService {
 		
 	}
 		
-	private Double calculatePrice(Cars car) {
+	public Double calculatePrice(Cars car) {
 		double basePrice = 20000;
 		int currentYear = LocalDate.now().getYear();
 		if(car.getYears()< currentYear - 10) {
