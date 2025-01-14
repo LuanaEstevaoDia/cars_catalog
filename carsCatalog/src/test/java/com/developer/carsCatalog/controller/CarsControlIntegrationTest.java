@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,15 +50,34 @@ public class CarsControlIntegrationTest {
 		Make makeHonda = new Make(2L, "Honda", "23456789012345", new ArrayList<>());
 		Make makeFiat = new Make(3L, "Fiat", "34567890123456", new ArrayList<>());
 		
-		List<Owner> owner = new ArrayList<>();
-		Owner owner1 = new Owner(1L, "Alice", 30);
-		Owner owner2 = new Owner(2L, "Bob", 40);
-		Owner owner3 = new Owner(3L,"Maria",25);
+		List<Owner> ownerList1 = new ArrayList<>();
+		Owner owner1A = new Owner(1L, "Alice", 30);
+		Owner owner2A = new Owner(2L, "Bob", 40);
+		Owner owner3A = new Owner(3L,"Mathias",25);
 		
-		owner.add(owner1);
-		owner.add(owner2);
-		owner.add(owner3);
+		ownerList1.add(owner1A);
+		ownerList1.add(owner2A);
+		ownerList1.add(owner3A);
 		
+
+		List<Owner> ownerList2 = new ArrayList<>();
+		Owner owner1B= new Owner(1L, "Maria", 30);
+		Owner owner2B = new Owner(2L, "Pablo", 40);
+		Owner owner3B = new Owner(3L,"Helen",25);
+		
+		ownerList2.add(owner1B);
+		ownerList2.add(owner2B);
+		ownerList2.add(owner3B);
+		
+
+		List<Owner> ownerList3 = new ArrayList<>();
+		Owner owner1C= new Owner(1L, "Regis", 30);
+		Owner owner2C = new Owner(2L, "Marlon", 40);
+		Owner owner3C = new Owner(3L,"Angela",25);
+		
+		ownerList3.add(owner1C);
+		ownerList3.add(owner2C);
+		ownerList3.add(owner3C);
 
 		car1 = Cars.builder()
 				.id(1L)
@@ -67,12 +85,33 @@ public class CarsControlIntegrationTest {
 				.years(2020)
 				.chassi("1NXBR32E76Z123456")
 				.make(makeToyota)
-				.owners(owner)
+				.owners(ownerList1)
 				.status(StatusCar.DISPONIVEL)
 				.build();
 				
 				
-				
+
+		car2= Cars.builder()
+				.id(2L)
+				.model("Fit")
+				.years(2022)
+				.chassi("1NXBR32E76Z123789")
+				.make(makeHonda)
+				.owners(ownerList2)
+				.status(StatusCar.DISPONIVEL)
+				.build();
+		
+
+		car3= Cars.builder()
+				.id(3L)
+				.model("Punto")
+				.years(2020)
+				.chassi("1NXBR32E76Z123196")
+				.make(makeFiat)
+				.owners(ownerList3)
+				.status(StatusCar.DISPONIVEL)
+				.build();
+
 
 		carList.add(car1);
 		carList.add(car2);
